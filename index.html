@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Bread — Devotional</title>
+<style>
+/* ── Google Fonts replaced with safe system serif/sans stacks ── */
+:root {
+  --cream: #FAF7F2;
+  --warm-gold: #C9A96E;
+  --pale-gold: #F0E6D3;
+  --charcoal: #2C2C2C;
+  --medium-gray: #7A7A7A;
+  --light-gray: #E8E4DE;
+  --soft-white: #FFFDF9;
+  --deep-brown: #3D2B1F;
+  --serif: Georgia, 'Times New Roman', Times, serif;
+  --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--cream);
+  color: var(--charcoal);
+  font-family: var(--sans);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── HEADER ─────────────────────────────────── */
+header {
+  text-align: center;
+  padding: 56px 24px 36px;
+}
+header::after {
+  content: '';
+  display: block;
+  width: 44px;
+  height: 1px;
+  background: var(--warm-gold);
+  margin: 22px auto 0;
+}
+.eyebrow {
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: var(--warm-gold);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  font-weight: 400;
+}
+h1 {
+  font-family: var(--serif);
+  font-weight: normal;
+  font-size: clamp(32px, 5.5vw, 52px);
+  line-height: 1.15;
+  color: var(--charcoal);
+  letter-spacing: -0.3px;
+}
+.hsub {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(14px, 2vw, 17px);
+  color: var(--medium-gray);
+  margin-top: 10px;
+}
+
+/* ── SCREENS ────────────────────────────────── */
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* ── EMOTION GRID ───────────────────────────── */
+#escreen {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 0 20px 80px;
+}
+.ptxt {
+  text-align: center;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(17px, 2.5vw, 22px);
+  margin-bottom: 8px;
+  color: var(--charcoal);
+}
+.psub {
+  text-align: center;
+  font-size: 11px;
+  color: var(--medium-gray);
+  letter-spacing: 1.5px;
+  margin-bottom: 36px;
+  text-transform: uppercase;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(168px, 1fr));
+  gap: 12px;
+}
+.card {
+  background: var(--soft-white);
+  border: 1px solid var(--light-gray);
+  border-radius: 3px;
+  padding: 20px 14px;
+  cursor: pointer;
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.card:hover {
+  border-color: var(--warm-gold);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.07);
+}
+.card:active { transform: translateY(0); }
+.card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--warm-gold);
+  transform: scaleX(0);
+  transition: transform 0.2s;
+  transform-origin: left;
+}
+.card:hover::after { transform: scaleX(1); }
+.eicon { font-size: 26px; display: block; margin-bottom: 9px; }
+.ename {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--charcoal);
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+.edesc {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--medium-gray);
+  line-height: 1.5;
+  display: block;
+}
+.ecount {
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: var(--warm-gold);
+  display: block;
+  margin-top: 8px;
+  text-transform: uppercase;
+}
+
+/* ── DEVOTION SCREEN ────────────────────────── */
+#dscreen {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 20px 100px;
+  animation: fadeUp 0.5s ease forwards;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.dtop {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+  text-align: center;
+}
+.stag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--pale-gold);
+  border: 1px solid var(--warm-gold);
+  padding: 6px 16px;
+  border-radius: 3px;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--deep-brown);
+  font-weight: 600;
+}
+.ctag {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--medium-gray);
+}
+.vblock {
+  background: var(--soft-white);
+  border-left: 3px solid var(--warm-gold);
+  padding: 24px 28px;
+  border-radius: 0 3px 3px 0;
+  margin-bottom: 6px;
+}
+.vtxt {
+  font-family: var(--serif);
+  font-size: clamp(15px, 2.2vw, 19px);
+  font-style: italic;
+  line-height: 1.75;
+  color: var(--charcoal);
+  margin-bottom: 12px;
+}
+.vref {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--warm-gold);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 24px 0 12px;
+}
+.divider::before, .divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--light-gray);
+}
+.dlabel {
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--medium-gray);
+  white-space: nowrap;
+}
+.rtxt {
+  font-family: var(--serif);
+  font-size: clamp(14px, 2vw, 17px);
+  line-height: 1.88;
+  color: var(--charcoal);
+}
+.rtxt p + p { margin-top: 14px; }
+.pblock {
+  background: var(--pale-gold);
+  border-radius: 3px;
+  padding: 20px 24px;
+  margin-top: 4px;
+}
+.ptxtp {
+  font-family: var(--serif);
+  font-size: clamp(13px, 2vw, 16px);
+  font-style: italic;
+  line-height: 1.85;
+  color: var(--deep-brown);
+}
+.dots {
+  display: flex;
+  gap: 7px;
+  justify-content: center;
+  margin-top: 24px;
+}
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--light-gray);
+  transition: background 0.25s, transform 0.2s;
+}
+.dot.active { background: var(--warm-gold); transform: scale(1.3); }
+.dot.seen   { background: var(--medium-gray); opacity: 0.4; }
+.btnrow {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 30px;
+  flex-wrap: wrap;
+}
+.btn {
+  font-family: var(--sans);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 13px 22px;
+  border: none;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+  font-weight: 500;
+}
+.btns {
+  background: transparent;
+  color: var(--charcoal);
+  border: 1px solid var(--light-gray);
+}
+.btns:hover { border-color: var(--warm-gold); color: var(--deep-brown); }
+.btnp { background: var(--charcoal); color: var(--cream); border: 1px solid var(--charcoal); }
+.btnp:hover { background: var(--deep-brown); border-color: var(--deep-brown); }
+
+footer {
+  text-align: center;
+  padding: 24px;
+  font-size: 10px;
+  color: var(--light-gray);
+  letter-spacing: 1.5px;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Daily Bread &middot; Devotional</div>
+  <h1>How are you<br>feeling today?</h1>
+  <p class="hsub">Receive a verse, reflection &amp; prayer for where you are right now.</p>
+</header>
+
+<!-- EMOTION SELECTION SCREEN -->
+<div id="escreen" class="screen active">
+  <p class="ptxt">Choose your current state of heart</p>
+  <p class="psub">There are no wrong answers. God meets you here.</p>
+  <div class="grid" id="grid"></div>
+</div>
+
+<!-- DEVOTION SCREEN -->
+<div id="dscreen" class="screen">
+  <div class="dtop">
+    <span class="stag" id="stag"></span>
+    <span class="ctag" id="ctag"></span>
+  </div>
+  <div class="vblock">
+    <div class="vtxt" id="vtxt"></div>
+    <div class="vref" id="vref"></div>
+  </div>
+  <div class="divider"><span class="dlabel">Reflection</span></div>
+  <div class="rtxt" id="rtxt"></div>
+  <div class="divider"><span class="dlabel">Prayer</span></div>
+  <div class="pblock"><div class="ptxtp" id="ptxtp"></div></div>
+  <div class="dots" id="dots"></div>
+  <div class="btnrow">
+    <button class="btn btns" onclick="goBack()">&#8592; Choose Another State</button>
+    <button class="btn btnp" id="nbtn" onclick="getAnother()">Another Word for This &#8594;</button>
+  </div>
+</div>
+
+<footer>Daily Bread &middot; A Devotional for Every Season of the Soul</footer>
+
+<script>
+var emotions = [
+  {id:'anxious',   icon:'&#127744;', name:'Anxious',   desc:'Worried or overwhelmed'},
+  {id:'grateful',  icon:'&#10024;',  name:'Grateful',  desc:'Thankful and full'},
+  {id:'lonely',    icon:'&#127769;', name:'Lonely',    desc:'Disconnected or unseen'},
+  {id:'joyful',    icon:'&#9728;&#65039;',  name:'Joyful',    desc:'Light and hopeful'},
+  {id:'grieving',  icon:'&#127783;&#65039;', name:'Grieving',  desc:'Sad or in loss'},
+  {id:'doubting',  icon:'&#127787;&#65039;', name:'Doubting',  desc:'Uncertain or questioning'},
+  {id:'exhausted', icon:'&#127810;', name:'Exhausted', desc:'Drained or worn thin'},
+  {id:'seeking',   icon:'&#127807;', name:'Seeking',   desc:'Searching for direction'},
+  {id:'angry',     icon:'&#128293;', name:'Angry',     desc:'Frustrated or hurt'},
+  {id:'peaceful',  icon:'&#128346;&#65039;', name:'Peaceful',  desc:'Calm and settled'},
+  {id:'hopeful',   icon:'&#127749;', name:'Hopeful',   desc:'Looking forward with faith'},
+  {id:'ashamed',   icon:'&#127761;', name:'Ashamed',   desc:'Heavy with guilt or regret'}
+];
+
+var D = {};
+
+D.anxious = [
+  {
+    v: '"Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God. And the peace of God, which transcends all understanding, will guard your hearts and your minds in Christ Jesus."',
+    r: 'Philippians 4:6\u20137',
+    f: '<p>Anxiety is often the gap between what we cannot control and our desperate need to control it. God does not dismiss your worry or shame you for it \u2014 He invites you to hand it over. Prayer here is not a technique for calming down; it is an act of trust. You are saying: I cannot carry this, but You can.</p><p>Notice that Paul pairs petition with thanksgiving. Gratitude reorients us \u2014 it reminds us of past faithfulness and loosens the grip of present fear. In that release, something shifts. The peace that guards your heart is not earned by managing your thoughts correctly; it arrives when you stop trying to solve what only God can hold.</p>',
+    p: 'Lord, I bring You every anxious thought \u2014 the ones I can name and the ones I cannot. I release my grip on outcomes I cannot control, and I ask You to guard my heart with a peace that doesn\'t depend on my circumstances. I trust You. Amen.'
+  },
+  {
+    v: '"Cast all your anxiety on him because he cares for you."',
+    r: '1 Peter 5:7',
+    f: '<p>This verse contains a word that is easy to skip over: \u201call.\u201d Not some of your worry. Not the acceptable anxieties. All of it \u2014 the petty fears and the deep ones, the rational concerns and the irrational spirals. God can handle the weight of your complete anxiety.</p><p>And the reason He invites this is not duty but care. He genuinely, personally cares for you \u2014 not as a category or a concept, but as a person He knows by name. Your anxiety is not inconvenient to Him; it is something He leans toward with compassion. Let that truth soften what is tight inside you today.</p>',
+    p: 'Father, I cast every worry onto You today \u2014 the small and the consuming. Thank You that You care for me personally, specifically, completely. Help me walk lighter because I\'ve left the weight with You. Amen.'
+  },
+  {
+    v: '"When anxiety was great within me, your consolation brought me joy."',
+    r: 'Psalm 94:19',
+    f: '<p>The psalmist does not pretend anxiety never came. He names it plainly \u2014 \u201cgreat within me\u201d \u2014 and then names what met it: God\'s consolation. This is the honest arc of the spiritual life. Not the absence of anxiety, but the discovery of what is greater.</p><p>Consolation is a tender word. It does not mean God talks you out of your feelings. It means He enters them with you, sits with you in them, and somehow \u2014 without removing the situation \u2014 brings a quiet joy that does not depend on resolution. You can have peace and still feel the weight. They coexist in the presence of God.</p>',
+    p: 'God, my anxiety is real and large. I don\'t ask You to take away my feelings \u2014 I ask You to meet me inside them. Bring Your consolation. Let me find in You a joy that exists alongside the worry. Amen.'
+  },
+  {
+    v: '"For God has not given us a spirit of fear, but of power, love, and self-discipline."',
+    r: '2 Timothy 1:7',
+    f: '<p>Fear \u2014 particularly the chronic, nameless dread that underlies anxiety \u2014 is not from God. That does not mean we are weak for feeling it; it means we are not obligated to live under its authority. What God has given us instead is a three-part alternative: power, love, and self-discipline.</p><p>Power to act despite fear. Love that casts out fear by occupying the space it wants to own. And self-discipline \u2014 the ability to choose our focus and redirect our minds. These are gifts already given, not distant virtues to achieve. You have been equipped. The anxiety does not get the final word.</p>',
+    p: 'Lord, remind me that fear is not my inheritance. You have given me power, love, and a sound mind. Where anxiety speaks loud, let these three speak louder. I choose today to walk in what You have already given me. Amen.'
+  }
+];
+
+D.grateful = [
+  {
+    v: '"Give thanks in all circumstances; for this is God\'s will for you in Christ Jesus."',
+    r: '1 Thessalonians 5:18',
+    f: '<p>Gratitude is one of the most transformative spiritual postures we can inhabit. It does not deny hardship \u2014 \u201cin all circumstances\u201d includes the difficult ones \u2014 but it chooses to look for the fingerprints of grace even there.</p><p>When we cultivate thankfulness, we train our eyes to see abundance where before we saw only scarcity. Let your gratitude today be an act of praise \u2014 not because everything is perfect, but because God is good and His goodness is woven into even the most ordinary moments of this day.</p>',
+    p: 'Thank You, Lord \u2014 for this breath, this day, for the specific gifts You have placed in my life. Heighten my awareness of Your goodness today. Let thankfulness be the lens through which I see everything. Amen.'
+  },
+  {
+    v: '"Bless the Lord, O my soul, and forget not all his benefits."',
+    r: 'Psalm 103:2',
+    f: '<p>The psalmist speaks to his own soul \u2014 almost as if the soul needs to be reminded, because it is so prone to forgetting. Gratitude is partly a discipline of memory: choosing to recall what God has done, rather than fixating on what is lacking.</p><p>What are the benefits you might be forgetting today? Health that is easy to overlook. Relationships that have been constant. Prayers that were answered quietly. The invitation of this verse is to make a list \u2014 mental or written \u2014 and let it reshape how you experience the next few hours.</p>',
+    p: 'Lord, I do not want to forget what You have done. Help me remember Your faithfulness today \u2014 the big moments and the quiet ones. Let my gratitude be specific, not general. Amen.'
+  },
+  {
+    v: '"He will take great delight in you; in his love he will no longer rebuke you, but will rejoice over you with singing."',
+    r: 'Zephaniah 3:17',
+    f: '<p>There is something almost startling about this verse: God rejoicing over you with singing. Not tolerating you. Not managing you. Delighting in you with music. Your gratitude today is not one-directional \u2014 it mirrors something God Himself experiences toward you.</p><p>Whatever has sparked gladness in you today, receive it as a gift from a Father who loves to see His children flourish. Your joy delights Him. Your thankfulness is an act of resonance \u2014 your heart responding to His.</p>',
+    p: 'Thank You for the gift of joy, Lord. I receive it not as something I\'ve earned but as something You\'ve given. Let it overflow into everything I touch today, and may it point others back to You, its source. Amen.'
+  },
+  {
+    v: '"Enter his gates with thanksgiving and his courts with praise; give thanks to him and praise his name. For the Lord is good and his love endures forever."',
+    r: 'Psalm 100:4\u20135',
+    f: '<p>Thanksgiving is how we enter God\'s presence \u2014 not as a religious transaction but as the natural response of a heart that has remembered who He is. We come already welcomed, and gratitude is the language of that welcome.</p><p>The reason given is simple and vast: \u201cThe Lord is good and his love endures forever.\u201d Your gratitude today is anchored not in your circumstances but in an unchanging truth. No matter what shifts around you, this remains: He is good. His love does not end. That alone is reason to give thanks.</p>',
+    p: 'Lord, I come into Your presence today with thanksgiving. Not because everything is easy, but because You are good and Your love never ends. Let that truth be the foundation of everything I do today. Amen.'
+  }
+];
+
+D.lonely = [
+  {
+    v: '"The Lord himself goes before you and will be with you; he will never leave you nor forsake you. Do not be afraid; do not be discouraged."',
+    r: 'Deuteronomy 31:8',
+    f: '<p>Loneliness is one of the most tender aches of the human experience \u2014 the sense of being unseen, unaccompanied, or simply without someone who truly knows you. Into that ache, God speaks one of His most repeated promises: I will not leave you.</p><p>Not as a religious comfort, but as a grounded reality. The God of the universe has committed Himself to your presence. You are not navigating this life \u2014 or this moment \u2014 alone. He goes before you into the unknown, walks beside you in the ordinary, and stays when everyone else has moved on.</p>',
+    p: 'Lord, in the quiet places where loneliness presses in, remind me that You are here. Make Your presence tangible to me today. Help me know \u2014 not just believe \u2014 that I am not alone. Amen.'
+  },
+  {
+    v: '"God sets the lonely in families, he leads out the prisoners with singing."',
+    r: 'Psalm 68:6',
+    f: '<p>God sees the lonely not as a problem to solve but as a person to place. He is a God who puts people in community \u2014 who weaves solitary souls into something larger than themselves. If you are in a season of isolation, hold this as a promise: He knows where you are, and He is working even now to surround you.</p><p>Sometimes community grows slowly, quietly. But God is a builder of belonging. The loneliness you feel today is not your permanent address. It is a season. And He is already preparing what comes next.</p>',
+    p: 'Father, You see my loneliness and You care. I trust You to bring belonging in Your way and Your timing. Until then, let Your presence be my company and Your love be enough. Amen.'
+  },
+  {
+    v: '"Even though I walk through the darkest valley, I will fear no evil, for you are with me; your rod and your staff, they comfort me."',
+    r: 'Psalm 23:4',
+    f: '<p>The dark valley in this psalm is not a metaphor for mild difficulty \u2014 it is a place where the shadows are deep and the way forward is uncertain. And yet the psalmist uses a decisive \u201cI will fear no evil.\u201d Not because the valley is not dark, but because the shepherd is present.</p><p>Loneliness often feels like a dark valley \u2014 a place where the warmth of human connection has thinned. The rod and staff that comfort are the instruments of a shepherd who is actively guiding, actively protecting, actively with you in the dark.</p>',
+    p: 'Shepherd, I feel the darkness of this lonely place. But I choose not to fear, because You are with me. Walk with me through this valley. Let me feel the comfort of Your nearness even when I cannot see the way. Amen.'
+  },
+  {
+    v: '"A father to the fatherless, a defender of widows, is God in his holy dwelling."',
+    r: 'Psalm 68:5',
+    f: '<p>God defines Himself as the one who specifically moves toward the most isolated \u2014 those who have no advocate, no covering, no one to speak for them. This is not a coincidental attribute but a core expression of who He is. He gravitates toward the lonely.</p><p>If you feel as though you are without someone who is genuinely for you, this is the God who says: I am. He does not wait to be sought before caring. He initiates. He defends. He fathers those who have no one. You are not overlooked; you are specifically seen by the One who counts the vulnerable as His own.</p>',
+    p: 'Father, be to me today what only You can be \u2014 a presence that covers what feels uncovered, a voice for what feels unheard. I receive Your care. I am not alone because I am Yours. Amen.'
+  }
+];
+
+D.joyful = [
+  {
+    v: '"Rejoice in the Lord always. I will say it again: Rejoice!"',
+    r: 'Philippians 4:4',
+    f: '<p>Paul wrote these words from a Roman prison \u2014 proof that his joy was not dependent on his environment. Joy in Scripture is not a mood; it is a decision anchored in the unchanging character of God. When circumstances align to make joy easy, it is a gift to receive wholeheartedly.</p><p>Rejoicing \u201cin the Lord\u201d grounds your gladness in something that cannot be taken away. Let your joy run deep today \u2014 deeper than the circumstances that sparked it. Root it in God Himself, so that when circumstances shift, the joy has somewhere to live that cannot be shaken.</p>',
+    p: 'Thank You for joy that is easy today, Lord. Help me receive it fully and root it in You \u2014 so it outlasts the moment and carries me through seasons when gladness is harder to find. Amen.'
+  },
+  {
+    v: '"You make known to me the path of life; you will fill me with joy in your presence, with eternal pleasures at your right hand."',
+    r: 'Psalm 16:11',
+    f: '<p>Joy, at its deepest, is not a thing we chase \u2014 it is the natural overflow of being in the right place, with the right Person. The psalmist discovered that joy lives in God\'s presence. Not after the problem is solved. Not when the longing is satisfied. In His presence \u2014 now, as you are.</p><p>The pleasures at God\'s right hand are eternal \u2014 they do not diminish, do not bore, do not disappoint. If your joy today is already large, imagine that it is only a foretaste of what fullness in His presence will be like. What you feel now is a preview.</p>',
+    p: 'Lord, thank You that joy is found in Your presence. Let me dwell there longer today. What I taste now is only a preview of what awaits \u2014 and that makes this moment even sweeter. Amen.'
+  },
+  {
+    v: '"This is the day the Lord has made; let us rejoice and be glad in it."',
+    r: 'Psalm 118:24',
+    f: '<p>Every day is a deliberate act of creation. God made this particular day \u2014 with its specific light, its particular people, its unique moments that will never be repeated. To rejoice in it is to honor the craft of the Maker.</p><p>Gladness is a form of recognition: I see what You have given, and I receive it. On days when joy comes naturally, the spiritual work is to notice what is worth celebrating \u2014 and to let that noticing deepen your awareness of a God who continuously creates good things for His children.</p>',
+    p: 'Lord, You made this day. I want to live it with open eyes \u2014 noticing the gifts, receiving the moments, rejoicing in the ordinary beauty You wove into today. Let me not waste it. Amen.'
+  },
+  {
+    v: '"The joy of the Lord is your strength."',
+    r: 'Nehemiah 8:10',
+    f: '<p>Joy is not just pleasant \u2014 it is powerful. The joy that comes from knowing God, from experiencing His goodness, becomes the energy that sustains us in hard seasons. It is not merely an emotion; it is fortification.</p><p>In this season of gladness, you are being filled. Let the joy run deep, past the surface of feeling into the structural places of your soul. Joy stored up in God carries you when life becomes difficult. Today\'s gladness is tomorrow\'s strength \u2014 receive it well.</p>',
+    p: 'Lord, let this joy go deep. Let it be strength I can draw on. I receive it not just as a feeling but as a fortification \u2014 evidence of Your goodness that I will carry with me into harder days. Amen.'
+  }
+];
+
+D.grieving = [
+  {
+    v: '"He heals the brokenhearted and binds up their wounds."',
+    r: 'Psalm 147:3',
+    f: '<p>Grief is not the absence of faith \u2014 it is proof that you loved something real. God does not rush you through your sorrow or ask you to manufacture peace before you are ready. He is a healer, and healing takes time.</p><p>The binding up of wounds is a gentle, careful act \u2014 not a quick fix but a tending to. You are being tended to, even now, even in the depth of this pain. The same God who created the universe moves toward your brokenness with the patience and precision of a skilled physician who has all the time in the world.</p>',
+    p: 'Lord, I bring You my broken heart. I don\'t ask You to take away the grief, but I do ask You to be present in it. Heal what is wounded. Bind what is torn. Hold me gently as You do. Amen.'
+  },
+  {
+    v: '"Blessed are those who mourn, for they will be comforted."',
+    r: 'Matthew 5:4',
+    f: '<p>Jesus called mourning blessed \u2014 not because grief is pleasant, but because it is met. Comfort is not a concept here; it is a Person. The God who wept at Lazarus\'s tomb is acquainted with your sorrow and does not stand at a clinical distance from it.</p><p>To mourn is to be honest about your loss, and that honesty opens the door to comfort that is real, not just rhetorical. You do not need to dress up your grief. Bring it as it is. The comfort comes not after you recover but in the very place of mourning.</p>',
+    p: 'Jesus, You wept. You know what sorrow feels like. Be near to me in mine. I receive Your comfort \u2014 even when I can\'t feel it yet \u2014 as a promise I can rest in. Amen.'
+  },
+  {
+    v: '"The Lord is close to the brokenhearted and saves those who are crushed in spirit."',
+    r: 'Psalm 34:18',
+    f: '<p>This verse does not say God is close to those who have it together. It says He is close to the brokenhearted \u2014 those who are, right now, undone by loss. The paradox of this promise is that the depth of your breaking is matched by the nearness of God.</p><p>Grief often feels like isolation. But the more crushed you are, the more specifically He draws close. You are not abandoned in this. You are found \u2014 precisely here, precisely now, by the One who leans in rather than pulling away.</p>',
+    p: 'Lord, I am brokenhearted and I need You to be close. I trust Your promise that You are \u2014 even when I cannot feel it. Draw near. Save what feels crushed. I give You my grief. Amen.'
+  },
+  {
+    v: '"Weeping may stay for the night, but rejoicing comes in the morning."',
+    r: 'Psalm 30:5',
+    f: '<p>This verse does not dismiss the weeping \u2014 it honors it as real, valid, and with its own duration: the night. Grief is not forever, but it is not nothing. The night is dark and the tears are genuine. And yet the promise stands: morning comes. Joy comes.</p><p>You do not need to hurry toward the morning. But you can hold this truth even in the dark: the night has an end. God has written it. What you are feeling now is not the last chapter. Weep \u2014 and trust the morning.</p>',
+    p: 'Father, I am in the night season. The weeping is real. I am not rushing it. But I hold onto Your promise that morning comes \u2014 that joy is coming for me. Until then, be near. Hold me through the dark. Amen.'
+  }
+];
+
+D.doubting = [
+  {
+    v: '"I do believe; help me overcome my unbelief!"',
+    r: 'Mark 9:24',
+    f: '<p>This is perhaps the most honest prayer in all of Scripture. The man did not pretend to have more faith than he had \u2014 he simply brought what he had, named what he lacked, and asked for help. God honors that kind of honesty. Doubt is not the opposite of faith; pretending is.</p><p>You can come to God with your questions, your half-beliefs, your \u201cI\'m not sure if You\'re there\u201d \u2014 and find that He is there, not offended, but gently working to make Himself known. The prayer of a doubter is still a prayer. And it is still heard.</p>',
+    p: 'Lord, I believe \u2014 help my unbelief. I bring You my questions and my uncertainties. I am not pretending to have more faith than I do. Meet me here, in the honest middle of it all. Amen.'
+  },
+  {
+    v: '"Unless I see the nail marks in his hands... I will not believe." Then Jesus said to Thomas, "Put your finger here; see my hands."',
+    r: 'John 20:25, 27',
+    f: '<p>Thomas was simply honest \u2014 he had suffered a devastating loss and needed more than secondhand testimony. And Jesus, rather than rebuking him, appeared specifically for Thomas. He invited Thomas to touch the evidence.</p><p>Your doubt does not disqualify you from encounter. Jesus walks toward doubters with the very thing they need. Your honest questions are not a sign that your faith is failing \u2014 they may be the very posture that opens you to the deepest encounter yet. Keep asking. Keep showing up. He will come.</p>',
+    p: 'Jesus, like Thomas, I need to see and know for myself. Come to me in my doubt. Give me what I need to believe more fully. I am here, and I am honest. Amen.'
+  },
+  {
+    v: '"If any of you lacks wisdom, you should ask God, who gives generously to all without finding fault, and it will be given to you."',
+    r: 'James 1:5',
+    f: '<p>Doubt is often, at its root, a lack of wisdom \u2014 not stupidity, but the genuine absence of clarity about what is true and why. James addresses this directly: ask God. And then he adds two words worth sitting with: \u201cwithout finding fault.\u201d God does not hold your uncertainty against you.</p><p>He does not say, \u201cYou should have figured this out by now.\u201d He says: ask, and I will give generously. The door to clarity is open, and the welcome is genuine. Bring your confusion and your unanswered questions to the One who knows everything \u2014 and is not bothered by yours.</p>',
+    p: 'Lord, I lack wisdom and clarity right now. I ask for it openly. You promised to give generously, without finding fault. I trust that promise. Untangle what is confused in me. Give me the understanding I need. Amen.'
+  },
+  {
+    v: '"For now we see only a reflection as in a mirror; but then we shall see face to face. Now I know in part; then I shall know fully, even as I am fully known."',
+    r: '1 Corinthians 13:12',
+    f: '<p>Paul acknowledges plainly what doubt often uncovers: we do not yet see clearly. We know in part. The mirror image is imperfect. This is not a failure of faith \u2014 it is the honest condition of being human and finite before an infinite God. Some questions will not be answered this side of eternity.</p><p>But the future promise transforms the present struggle. One day, you will know fully \u2014 even as you are already fully known. Your doubts exist within a larger story in which everything becomes clear. Until then, partial knowledge is enough to walk by, and the God who knows you completely is enough to trust.</p>',
+    p: 'Lord, I accept that I cannot see everything clearly yet. Help me walk by the light I have, trusting You with what remains unclear. I am fully known by You \u2014 and that is enough to keep going. Amen.'
+  }
+];
+
+D.exhausted = [
+  {
+    v: '"Come to me, all you who are weary and burdened, and I will give you rest."',
+    r: 'Matthew 11:28',
+    f: '<p>There is an invitation embedded in these words that is easy to miss: rest is something Jesus gives, not something we manufacture. The weariness He addresses is deeper than tired muscles \u2014 it is the exhaustion of the soul that comes from striving, performing, and carrying what was never meant to be ours alone.</p><p>To come to Jesus with our burdens is to acknowledge our limits. And in that humble coming, we find not just relief but restoration. You are allowed to be this tired. And you are allowed \u2014 invited \u2014 to bring it all to Him.</p>',
+    p: 'Jesus, I come to You tired. I lay down what I have been carrying \u2014 the worry, the pressure, the performance. Receive it all, and give me the deep rest only You can provide. Amen.'
+  },
+  {
+    v: '"He gives strength to the weary and increases the power of the weak."',
+    r: 'Isaiah 40:29',
+    f: '<p>God does not require you to arrive at His feet with something to offer. The weary are specifically named here \u2014 those whose tanks are empty, whose endurance has run thin. He gives strength; you receive it. There is no striving required in this exchange.</p><p>The qualifier is simply weakness \u2014 and you qualify. Rest in that. Let God be the source of what you cannot manufacture for yourself today. Your depletion is not a disqualification; it is precisely the condition He moves toward with power to give.</p>',
+    p: 'Father, I am weak and I know it. I come not with energy to offer but with need. Strengthen me today from the inside out. Where I am empty, fill me. Where I am depleted, renew me. Amen.'
+  },
+  {
+    v: '"He makes me lie down in green pastures, he leads me beside quiet waters, he refreshes my soul."',
+    r: 'Psalm 23:2\u20133',
+    f: '<p>Sometimes the shepherd makes us lie down \u2014 not because we willingly stop, but because our bodies and spirits have reached their limit and He knows what we need before we do. Exhaustion can be the shepherd\'s way of leading us to green pastures we would never have chosen voluntarily.</p><p>The quiet waters and the refreshing of the soul are not rewards for good performance \u2014 they are the Shepherd\'s gift to His sheep who are spent. Let yourself be led today. Let yourself lie down. The refreshing is not something you earn; it is something He brings.</p>',
+    p: 'Shepherd, lead me to the quiet place today. I am too tired to find it myself. Make me lie down if You must. Refresh my soul. I trust You to restore what has run dry. Amen.'
+  },
+  {
+    v: '"My flesh and my heart may fail, but God is the strength of my heart and my portion forever."',
+    r: 'Psalm 73:26',
+    f: '<p>The psalmist says something courageous here: my flesh and heart may fail. He does not promise they won\'t. He does not pretend the exhaustion isn\'t real. Instead, he relocates his source of strength \u2014 not in his own resilience, but in God who is \u201cthe strength of my heart.\u201d</p><p>When your own resources run out, you are not left with nothing. You are left with the One whose strength is inexhaustible. This is not a call to push through \u2014 it is an invitation to lean. When your portion runs out, God remains your portion. He is enough when you are not.</p>',
+    p: 'Lord, my strength has run out. I am not pretending otherwise. Be the strength of my heart today \u2014 carry what I cannot carry, sustain what I cannot sustain. You are my portion. That is enough. Amen.'
+  }
+];
+
+D.seeking = [
+  {
+    v: '"Whether you turn to the right or to the left, your ears will hear a voice behind you, saying, This is the way; walk in it."',
+    r: 'Isaiah 30:21',
+    f: '<p>When you are at a crossroads \u2014 unsure of the path, the decision, the next step \u2014 the promise here is extraordinary: guidance will come. Not as a map handed over all at once, but as a voice that speaks when you reach the turn. Often direction is given one step at a time, not in full panorama.</p><p>Trust that God knows where you are going even when you cannot see it. Keep walking. Keep listening. He is not playing hide-and-seek with your future; He is leading you through it, one faithful step at a time.</p>',
+    p: 'Lord, I am seeking direction. I don\'t know which way to go, but I trust that You do. Quiet my anxious deciding, and speak clearly. I will listen. I will follow. Lead me in the way I should go. Amen.'
+  },
+  {
+    v: '"You will seek me and find me when you seek me with all your heart."',
+    r: 'Jeremiah 29:13',
+    f: '<p>This is one of the most direct promises in Scripture about seeking: it ends in finding. Not maybe. Not possibly. When you seek with all your heart \u2014 with genuine, wholehearted intention \u2014 you will find. God does not make Himself impossible to discover.</p><p>The invitation to seek wholeheartedly is not about achieving spiritual intensity \u2014 it is about sincerity. It is showing up honestly and repeatedly. Come with your whole heart. He will be found.</p>',
+    p: 'Lord, I want to seek You wholeheartedly \u2014 not just the answers I want, but You Yourself. Make Yourself findable. I believe Your promise: those who seek with all their heart will find. I am here, seeking. Amen.'
+  },
+  {
+    v: '"Your word is a lamp to my feet and a light to my path."',
+    r: 'Psalm 119:105',
+    f: '<p>A lamp to your feet illuminates just enough to take the next step \u2014 not the whole road, not the final destination, just what is immediately in front of you. This is usually how God\'s guidance works: not in full revelation but in enough light for the present moment.</p><p>If you are seeking direction, return to what you already know. Walking faithfully in the light you have is often how the next light is given. Direction follows obedience more than it precedes it. Take the step the lamp illuminates, and trust the next one will be lit when you need it.</p>',
+    p: 'Lord, give me enough light for today\'s step. I don\'t need to see the whole road \u2014 just what is in front of me. I will walk in the light I have and trust You to light what comes next. Amen.'
+  },
+  {
+    v: '"For we are God\'s handiwork, created in Christ Jesus to do good works, which God prepared in advance for us to do."',
+    r: 'Ephesians 2:10',
+    f: '<p>You are not an accident. You are a work of art \u2014 the Greek word here is poiema, from which we get \u201cpoem.\u201d God crafted you deliberately, with intention, for a purpose prepared before you were born. You do not need to discover your purpose in order to walk toward it; it already exists.</p><p>The good works prepared for you are not all grand and visible. Many are woven into the fabric of the everyday. Show up today as someone with a purpose, because you are. Your seeking is not creating the plan; it is participating in one already written by God.</p>',
+    p: 'Father, help me live as Your handiwork today \u2014 created intentionally, purposed specifically. Open my eyes to the good works You have already prepared for me to walk in. I trust You with the rest. Amen.'
+  }
+];
+
+D.angry = [
+  {
+    v: '"In your anger do not sin: Do not let the sun go down while you are still angry."',
+    r: 'Ephesians 4:26',
+    f: '<p>This verse does something remarkable: it acknowledges anger without condemning it. Anger itself is not the problem \u2014 it is often a sign that something wrong has occurred, that justice has been violated, that a wound has been inflicted. God made you to feel it. But anger becomes destructive when we let it harden into resentment or act it out in harm.</p><p>The instruction about the sun is practical wisdom: deal with it before it calcifies. Not by suppressing it, not by pretending it isn\'t real, but by processing it \u2014 in prayer, in honest conversation, in the presence of God \u2014 before it becomes something that owns you.</p>',
+    p: 'God, I am angry. I bring that to You honestly. I ask You to receive it, to help me process it without sinning, and to begin the work of healing where I\'ve been wounded. Guard my words and actions today. Amen.'
+  },
+  {
+    v: '"Refrain from anger and turn from wrath; do not fret \u2014 it leads only to evil."',
+    r: 'Psalm 37:8',
+    f: '<p>Fretting is anger\'s quieter companion \u2014 the ongoing mental rehearsal of the injustice, the wound, the offense. The psalmist warns against it not because the anger is unjustified, but because fretting leads somewhere we do not want to go. It keeps us locked in a loop that produces harm without producing healing.</p><p>Turning from wrath is not the same as denying what happened. It is choosing not to let the wrong thing determine your next action. Anger held too long poisons the one holding it. Let it go to God, the only just Judge.</p>',
+    p: 'Lord, I choose to release this anger to You \u2014 not because it isn\'t valid, but because You are the one who judges justly. I don\'t want it to lead me somewhere harmful. Take it from me. Bring me peace. Amen.'
+  },
+  {
+    v: '"The Lord is compassionate and gracious, slow to anger, abounding in love."',
+    r: 'Psalm 103:8',
+    f: '<p>God is slow to anger \u2014 and that tells us something about what anger well-managed looks like. Slowness does not mean the absence of feeling; it means the presence of composure. God sees injustice. He is moved by it. But He does not act rashly from it. His anger is patient, purposeful, just.</p><p>When we are angry, we can ask: what would slowness look like here? Not suppression, not delay of justice, but the measured, God-shaped response that sees clearly and acts wisely. In your anger, you have a model. He is slow. He is compassionate. He abounds in love.</p>',
+    p: 'Lord, make me slow to anger, as You are. Let the fullness of my feeling pass through Your presence before it becomes action or word. Form in me the kind of anger that leads to justice, not destruction. Amen.'
+  },
+  {
+    v: '"Do not be overcome by evil, but overcome evil with good."',
+    r: 'Romans 12:21',
+    f: '<p>The impulse of anger is often toward equivalence \u2014 to repay what was received, to give back in kind. Paul calls us to something harder and more powerful: to overcome evil with good. This is not passivity; it is active counter-force. Good, offered into a bad situation, changes the situation.</p><p>It takes more strength to respond with good than to retaliate with anger. Your anger is real. But the most powerful thing you can do with it is refuse to let it determine your response. Overcome. Don\'t be overcome. The high road is the road Jesus walked before you.</p>',
+    p: 'Lord, I don\'t want to be overcome by what was done to me. Give me the strength to respond with good \u2014 not because I feel like it, but because You have called me to it. Overcome in me. Amen.'
+  }
+];
+
+D.peaceful = [
+  {
+    v: '"The Lord is my shepherd, I lack nothing. He makes me lie down in green pastures, he leads me beside quiet waters, he refreshes my soul."',
+    r: 'Psalm 23:1\u20133',
+    f: '<p>Peace is a gift worth savoring. In seasons of quiet and stillness, let your peace deepen your trust and expand your gratitude. The good Shepherd does not only lead you through dark valleys \u2014 He also leads you beside still waters, to places of genuine rest.</p><p>Today, your soul is being refreshed. Receive it fully. Let this peace root you deeper so that when difficult seasons come, you will remember what it felt like to be here \u2014 led, cared for, provided for \u2014 and you will trust that He is still the same Shepherd in every season.</p>',
+    p: 'Thank You, Lord, for this peace. I receive it with open hands, not grasping but grateful. Let it go deep, refreshing the parts of my soul that have been dry. You are my Shepherd, and I lack nothing. Amen.'
+  },
+  {
+    v: '"You will keep in perfect peace those whose minds are steadfast, because they trust in you."',
+    r: 'Isaiah 26:3',
+    f: '<p>Perfect peace \u2014 shalom shalom in Hebrew, a doubled emphasis \u2014 is the kind of wholeness and completeness that permeates every layer of a person. It is offered to those whose minds are steadfast: not those who never struggle, but those who consistently return their gaze to God.</p><p>The peace you are experiencing right now is not accidental. It is the fruit of trust. Receive it as both gift and confirmation: this is what it looks like to be anchored in the right place. Stay here as long as you can. Learn its texture so you can find your way back.</p>',
+    p: 'Lord, keep my mind steadfast in You. Let this peace be the evidence of trust well-placed. I want to stay here \u2014 not anxious, not striving, just anchored in You. Thank You for this gift. Amen.'
+  },
+  {
+    v: '"And the peace of God, which transcends all understanding, will guard your hearts and your minds in Christ Jesus."',
+    r: 'Philippians 4:7',
+    f: '<p>The peace that transcends understanding is exactly that \u2014 it defies rational explanation. It is the settled calm that exists even when circumstances don\'t warrant it, the stillness that persists even when the world is loud. This peace is not fragile \u2014 it is a guard. It protects the heart and mind from what would otherwise undo them.</p><p>In your peaceful season, let this truth strengthen your confidence in God\'s sovereignty. If He can give you peace now, He can give it in the storm too. Learn the shape of this peace so you recognize it even when the weather changes.</p>',
+    p: 'Father, this peace I have defies explanation \u2014 and I receive it as Your gift. Guard my heart and mind. Let this peace be a foundation I return to even when circumstances shift. Thank You. Amen.'
+  },
+  {
+    v: '"Let the peace of Christ rule in your hearts, since as members of one body you were called to peace."',
+    r: 'Colossians 3:15',
+    f: '<p>The word \u201crule\u201d here means to arbitrate or act as referee \u2014 the peace of Christ is to be the deciding factor in your inner life. When competing voices clamor for your attention, when options pull in different directions, peace is the umpire. Follow the peace.</p><p>In a season when peace comes easily, practice listening to it. Learn what it feels like in your body, your mind, your spirit. Become fluent in its language. Then when the noisy seasons come, you will recognize this same peace beneath the noise \u2014 and you will know how to follow it home.</p>',
+    p: 'Lord, let Your peace rule in me \u2014 not just as a feeling but as a compass. Teach me to follow the peace, to recognize it, to trust it as Your voice. And let it overflow from me into the people around me. Amen.'
+  }
+];
+
+D.hopeful = [
+  {
+    v: '"For I know the plans I have for you," declares the Lord, "plans to prosper you and not to harm you, plans to give you hope and a future."',
+    r: 'Jeremiah 29:11',
+    f: '<p>Hope is not the same as optimism \u2014 it is anchored in the character and promises of a God who cannot lie. When He declares plans for your future, it is not wishful thinking but sovereign intention. Your hope is well-placed.</p><p>Let this hope fuel your movement forward, your willingness to trust and risk and step into what you cannot yet see. The One who holds your future is good, and He is for you. What you are moving toward has been prepared. Walk into it with open hands.</p>',
+    p: 'Lord, thank You for hope that doesn\'t disappoint. I place my future in Your hands, trusting that Your plans for me are good. May this hope move me forward with courage and open hands. Amen.'
+  },
+  {
+    v: '"We have this hope as an anchor for the soul, firm and secure."',
+    r: 'Hebrews 6:19',
+    f: '<p>An anchor does not remove the storm or guarantee calm waters. What it does is keep the ship from drifting when the winds are strongest. Hope in God functions the same way: not a guarantee of smooth sailing, but a hold on something fixed when everything else is moving.</p><p>Your hope right now is an anchor, not just a feeling. It reaches into what is eternal and unchanging and holds you there. As you move forward with hope, you carry this anchor with you \u2014 firm and secure, regardless of what waters lie ahead.</p>',
+    p: 'Lord, let this hope be my anchor \u2014 not just a pleasant feeling but something that holds me when the winds come. I fix my hope in You, who are firm and secure. Nothing can move what is anchored in You. Amen.'
+  },
+  {
+    v: '"May the God of hope fill you with all joy and peace as you trust in him, so that you may overflow with hope by the power of the Holy Spirit."',
+    r: 'Romans 15:13',
+    f: '<p>God is called here \u201cthe God of hope\u201d \u2014 not the God of certainty or the God of resolved outcomes, but of hope itself. He is the source of it, the keeper of it, and the one who fills us with it. And notice the overflow: hope that is given by God does not stay contained. It spills out.</p><p>The hope you feel today is not just for you. It is meant to brim over into conversations, into relationships, into the lives of people who have lost their own. You are being filled to overflow. Ask God who around you most needs what He has poured into you \u2014 and go there.</p>',
+    p: 'God of hope, fill me completely \u2014 with joy and peace, with hope that overflows. Let what You have given me spill into the people around me who need it. Use me today as a carrier of hope. Amen.'
+  },
+  {
+    v: '"But those who hope in the Lord will renew their strength. They will soar on wings like eagles; they will run and not grow weary."',
+    r: 'Isaiah 40:31',
+    f: '<p>Hope is not passive. It is energy. The image of soaring on eagle\'s wings is one of effortless strength \u2014 not the grinding effort of pure willpower, but the dynamic lift of wind beneath wings. Hope in God provides a kind of uplift that exceeds our natural capacity.</p><p>In this hopeful season, you are positioned for exactly that \u2014 to run, to soar, to move forward with a momentum that is not purely your own. Your hope is fueling something. Trust that the wind beneath your wings is more than enough for where you are going.</p>',
+    p: 'Lord, I am hopeful and I feel the lift. Let me soar \u2014 not in my own strength but in Yours. Use this season of hope to carry me forward into what You have prepared. I will not grow weary because You are my wind. Amen.'
+  }
+];
+
+D.ashamed = [
+  {
+    v: '"Therefore, there is now no condemnation for those who are in Christ Jesus."',
+    r: 'Romans 8:1',
+    f: '<p>Shame says: You are what you have done. The Gospel says: You are who God says you are \u2014 and in Christ, He calls you beloved, forgiven, and free. Condemnation has been abolished for those who are in Christ. This does not minimize what you have done \u2014 but it removes its power to define you.</p><p>Shame keeps us hiding; grace calls us back into the light. You do not need to carry this. It has already been carried for you. The verdict has already been spoken: no condemnation. Not \u201cless condemnation.\u201d None.</p>',
+    p: 'Jesus, I come to You carrying shame I don\'t know how to put down. Thank You that there is no condemnation for those who are in You. I receive forgiveness. I receive cleanness. Help me walk in the freedom You\'ve already purchased. Amen.'
+  },
+  {
+    v: '"If we confess our sins, he is faithful and just and will forgive us our sins and purify us from all unrighteousness."',
+    r: '1 John 1:9',
+    f: '<p>Confession is not self-punishment. It is honest acknowledgment in the presence of a God whose response is not condemnation but cleansing. He is described here as faithful \u2014 He will not turn you away \u2014 and just, meaning His forgiveness is grounded in the atoning work of Christ.</p><p>The shame you carry can be named, confessed, and released. You are not stuck with it. What you bring into the light, He cleanses. What you name honestly, He forgives completely. The invitation is simply to stop hiding what He is already willing to remove.</p>',
+    p: 'Father, I confess what I have been carrying silently. I bring it into Your light now. Thank You that You are faithful to forgive and to purify. I receive both today. Amen.'
+  },
+  {
+    v: '"Though your sins are like scarlet, they shall be as white as snow; though they are red as crimson, they shall be like wool."',
+    r: 'Isaiah 1:18',
+    f: '<p>God invites us to a conversation \u2014 \u201clet us settle the matter.\u201d He is not avoiding the weight of what we have done; He is addressing it directly and declaring something that should seem impossible: that what is deeply stained can become white as snow.</p><p>Scarlet and crimson are not light stains \u2014 they are deep, saturating colors that don\'t wash out easily. And yet God says: these I will make white as snow. His cleansing is not a surface clean. It reaches what is deepest and most stubborn, and transforms it entirely. There is nothing too stained for Him.</p>',
+    p: 'Lord, I bring You what feels deeply, permanently stained. I believe Your word: You make scarlet white as snow. Do that in me. Cleanse what I cannot clean myself. I receive the impossible gift of a clean start. Amen.'
+  },
+  {
+    v: '"He will rejoice over you with singing."',
+    r: 'Zephaniah 3:17',
+    f: '<p>This verse is for the person who has lived under a sense of God\'s displeasure \u2014 who has felt that He must be disappointed or withholding. Into that experience, Zephaniah declares something startling: God rejoices over you with singing. Not despite what you\'ve done \u2014 but in His love, having already dealt with it.</p><p>Shame convinces us that God can only tolerate us. But He sings over us. His delight is not contingent on our perfection \u2014 it is rooted in who He is and what He has done. You are not merely forgiven; you are delighted in. Let that replace the soundtrack of shame with something far truer.</p>',
+    p: 'Lord, replace the voice of shame with Your voice \u2014 which sings over me. Help me hear Your delight instead of my failure. I choose to believe that I am forgiven, loved, and rejoiced over. Amen.'
+  }
+];
+
+/* ── APP LOGIC ─────────────────────────────── */
+var curEmotion = null;
+var curIdx = 0;
+
+function renderEmotions() {
+  var g = document.getElementById('grid');
+  g.innerHTML = emotions.map(function(e) {
+    var count = D[e.id] ? D[e.id].length : 0;
+    return '<div class="card" onclick="pick(\'' + e.id + '\',\'' + e.name + '\')">' +
+      '<span class="eicon">' + e.icon + '</span>' +
+      '<span class="ename">' + e.name + '</span>' +
+      '<span class="edesc">' + e.desc + '</span>' +
+      '<span class="ecount">' + count + ' reflections</span>' +
+      '</div>';
+  }).join('');
+}
+
+function pick(id, name) {
+  curEmotion = id;
+  curIdx = 0;
+  show(name);
+}
+
+function show(name) {
+  var pool = D[curEmotion];
+  if (!pool) return;
+  var dev = pool[curIdx];
+  var e = emotions.filter(function(x) { return x.id === curEmotion; })[0];
+
+  document.getElementById('stag').innerHTML = e.icon + '&nbsp; Feeling ' + name;
+  document.getElementById('ctag').textContent = 'Reflection ' + (curIdx + 1) + ' of ' + pool.length;
+  document.getElementById('vtxt').textContent = dev.v;
+  document.getElementById('vref').textContent = '\u2014 ' + dev.r;
+  document.getElementById('rtxt').innerHTML = dev.f;
+  document.getElementById('ptxtp').textContent = dev.p;
+
+  var dotsEl = document.getElementById('dots');
+  dotsEl.innerHTML = pool.map(function(_, i) {
+    var cls = 'dot';
+    if (i === curIdx) cls += ' active';
+    else if (i < curIdx) cls += ' seen';
+    return '<div class="' + cls + '"></div>';
+  }).join('');
+
+  var btn = document.getElementById('nbtn');
+  btn.textContent = (curIdx >= pool.length - 1) ? 'Start Over \u21BA' : 'Another Word for This \u2192';
+
+  document.getElementById('escreen').classList.remove('active');
+  var s = document.getElementById('dscreen');
+  s.classList.add('active');
+  s.style.animation = 'none';
+  void s.offsetWidth;
+  s.style.animation = 'fadeUp .5s ease forwards';
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function goBack() {
+  document.getElementById('dscreen').classList.remove('active');
+  document.getElementById('escreen').classList.add('active');
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function getAnother() {
+  var pool = D[curEmotion];
+  curIdx = (curIdx + 1) % pool.length;
+  var e = emotions.filter(function(x) { return x.id === curEmotion; })[0];
+  show(e.name);
+}
+
+renderEmotions();
+</script>
+</body>
+</html>
